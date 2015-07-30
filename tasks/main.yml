@@ -1,0 +1,17 @@
+---
+- name: Install nginx
+  homebrew: name=nginx state=present
+
+- name: Configure nginx
+  copy: src=nginx.conf dest=/usr/local/etc/nginx/nginx.conf
+
+- name: Create nginx launchctl configuration
+  copy:
+    src: /usr/local/opt/nginx/homebrew.mxcl.nginx.plist
+    dest: /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
+    owner: root
+  sudo: yes
+
+- name: Start nginx
+  shell: launchctl load /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
+  sudo: yes
